@@ -1,0 +1,17 @@
+{
+	"name": "typescript",
+	"packageManager": "yarn@4.7.0",
+	"workspaces": [
+		"packages/*"
+	],
+	"scripts": {
+		"build": "turbo run build",
+		"check-build": "turbo run check-build"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"tslib": "^2.8.1",
+		"turbo": "^2.4.4",
+		"typescript": "^5.8.2"
+	}
+}

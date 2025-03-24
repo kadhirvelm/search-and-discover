@@ -1,0 +1,25 @@
+{
+	"name": "electron-app",
+	"packageManager": "yarn@4.7.0",
+	"devDependencies": {
+		"@rollup/plugin-typescript": "^12.1.2",
+		"@types/electron": "^1.6.12",
+		"rollup": "^4.36.0",
+		"rollup-plugin-copy": "^3.5.0",
+		"tslib": "^2.8.1",
+		"typescript": "^5.8.2"
+	},
+	"main": "dist/main.js",
+	"scripts": {
+		"build": "rollup -c",
+		"build:watch": "rollup -c --watch",
+		"check-build": "tsc",
+		"dev": "yarn build:watch & yarn start",
+		"lint": "biome check ./src",
+		"start": "electronmon"
+	},
+	"dependencies": {
+		"electron": "^35.0.0",
+		"electronmon": "^2.0.3"
+	}
+}
