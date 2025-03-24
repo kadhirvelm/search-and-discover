@@ -1,0 +1,16 @@
+{
+    "devDependencies": {
+        "typescript": "5.3.3"
+    },
+    "main": "dist/index.js",
+    "name": "api",
+    "packageManager": "yarn@4.7.0",
+    "scripts": {
+        "build": "tsc",
+        "check:build": "tsc --noEmit",
+        "dev": "tsc --watch",
+        "lint": "biome check ./src"
+    },
+    "typings": "dist/index.d.ts",
+    "version": "1.0.0"
+}

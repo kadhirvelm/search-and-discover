@@ -1,7 +1,7 @@
 import { Controller, Get, Post } from "@nestjs/common";
+import type { SearchAndDiscoverConfigWithName } from "api";
 // biome-ignore lint/style/useImportType: <explanation>
 import { AppService } from "./app.service";
-import type { SearchAndDiscoverConfigWithName } from "./config.service";
 
 @Controller("app")
 export class AppController {
