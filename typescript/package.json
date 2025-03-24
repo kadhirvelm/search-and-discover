@@ -13,5 +13,10 @@
 		"tslib": "^2.8.1",
 		"turbo": "^2.4.4",
 		"typescript": "^5.8.2"
+	},
+	"dependenciesMeta": {
+		"@biomejs/biome@1.9.4": {
+			"unplugged": true
+		}
 	}
 }

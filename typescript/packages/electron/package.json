@@ -2,6 +2,7 @@
 	"name": "electron-app",
 	"packageManager": "yarn@4.7.0",
 	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
 		"@rollup/plugin-typescript": "^12.1.2",
 		"@types/electron": "^1.6.12",
 		"rollup": "^4.36.0",
