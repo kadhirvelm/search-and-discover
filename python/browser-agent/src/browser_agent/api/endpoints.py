@@ -17,6 +17,9 @@ def register_routes(app):
 
     @app.route("/start-server", methods=["POST"])
     def start_python_server():
-        start_server()  # wait to see if ready
+        try:
+            start_server()  # wait to see if ready
+        except OSError as e:
+            return jsonify({"error": f"Failed to start server: {e}"}), 500
 
         return jsonify({"status": "ready"})
