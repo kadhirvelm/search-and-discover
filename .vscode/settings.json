@@ -22,5 +22,8 @@
       "source.fixAll.biome": "explicit",
       "source.organizeImports.biome": "explicit"
   },
-  "codeQL.githubDatabase.download": "never"
+  "codeQL.githubDatabase.download": "never",
+  "python.defaultInterpreterPath": "python/browser-agent/.venv/bin/python",
+  "python.analysis.extraPaths": ["python/browser-agent/src"],
+  "python.envFile": "${workspaceFolder}/python/browser-agent/.env"
 }

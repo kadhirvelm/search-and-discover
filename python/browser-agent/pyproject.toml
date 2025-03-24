@@ -1,0 +1,22 @@
+[project]
+name = "browser-agent"
+version = "0.1.0"
+description = ""
+authors = [{ name = "Billy Wang", email = "wwwang0430@gmail.com" }]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = ["flask (>=3.1.0,<4.0.0)", "python-dotenv (>=1.0.1,<2.0.0)"]
+
+[tool.poetry]
+packages = [{ include = "browser_agent", from = "src" }]
+
+[tool.poetry.group.dev.dependencies]
+black = { version = "^21.7b0", python = ">=3.6.2" }
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+start = "browser_agent.app:main"
