@@ -1,0 +1,5 @@
+{
+  "python.defaultInterpreterPath": "python/browser-agent/.venv/bin/python",
+  "python.analysis.extraPaths": ["python/browser-agent/src"],
+  "python.envFile": "${workspaceFolder}/python/browser-agent/.env"
+}
