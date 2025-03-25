@@ -1,11 +1,8 @@
 import logging
 import sys
 import os
-from dotenv import load_dotenv
 
-load_dotenv
-
-LOG_FILE = os.getenv("LOG_FILE", "/var/tmp/sdk-app/server.logs")
+LOG_FILE = os.environ.get("LOG_FILE", "/var/tmp/sdk-app/server.logs")
 LOG_FORMAT = "%(asctime)s - %(levelname)s - [%(command_id)s] %(message)s"
 
 
