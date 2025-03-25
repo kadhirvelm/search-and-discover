@@ -8,6 +8,7 @@ def load_config(app=None):
     config = {
         "HOST": os.environ.get("HOST"),
         "PORT": os.environ.get("PORT"),
+        "LOG_FILE": os.environ.get("LOG_FILE")
     }
 
     if app:

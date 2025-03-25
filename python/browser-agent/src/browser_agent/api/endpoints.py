@@ -1,7 +1,7 @@
 from flask import request, jsonify
+from browser_agent.core.create_session import create_new_session
 from browser_agent.core.utils.send_command import send_command
-from browser_agent.core.init_server import start_server
-
+from browser_agent.core.singletons.server_state import command_server
 
 def register_routes(app):
     @app.route("/run-command", methods=["POST"])
@@ -14,12 +14,16 @@ def register_routes(app):
 
         result = send_command(command)
         return jsonify({"result": result})
+    
+    @app.route("/create-session", methods=["POST"])
+    def create_session():
+        new_session_id = create_new_session()
+        return jsonify({"session_id": new_session_id})
 
-    @app.route("/start-server", methods=["POST"])
-    def start_python_server():
-        try:
-            start_server()  # wait to see if ready
-        except OSError as e:
-            return jsonify({"error": f"Failed to start server: {e}"}), 500
+    @app.route("/server-health", methods=["GET"])
+    def server_health():
+        return jsonify({
+            "running": command_server.is_running(),
+            "responding": command_server.is_responding()
+        }), 200 if command_server.is_responding() else 503
 
-        return jsonify({"status": "ready"})
