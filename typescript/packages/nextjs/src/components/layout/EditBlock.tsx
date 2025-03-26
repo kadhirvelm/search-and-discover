@@ -11,7 +11,7 @@ import { Button, Flex } from "antd";
 import type { Block as BlockType } from "api";
 import clsx from "clsx";
 import { useState } from "react";
-import styles from "./Block.module.scss";
+import styles from "./EditBlock.module.scss";
 
 const AddBlock = ({
 	onAdd,
@@ -44,7 +44,7 @@ const AddBlock = ({
 	);
 };
 
-export const Block = ({
+export const EditBlock = ({
 	block,
 	isRoot = false,
 	onUpdate,
@@ -145,7 +145,7 @@ export const Block = ({
 				{maybeRenderDelete()}
 				<div className={styles.rowContainer}>
 					{block.rows.map((row, index) => (
-						<Block
+						<EditBlock
 							block={row}
 							key={`row-${index}`}
 							onDelete={onDeleteRow(index)}
@@ -196,7 +196,7 @@ export const Block = ({
 				{maybeRenderDelete()}
 				<div className={styles.columnContainer}>
 					{block.columns.map((column, index) => (
-						<Block
+						<EditBlock
 							block={column}
 							key={`column-${index}`}
 							onDelete={onDeleteColumn(index)}
