@@ -1,6 +1,6 @@
 import type { SearchAndDiscoverConfigs } from "api";
 import { useEffect, useState } from "react";
-import { configService } from "../configService";
+import { configService } from "../services/configService";
 
 export function useGetConfigs() {
 	const [configs, setConfigs] = useState<SearchAndDiscoverConfigs | null>(null);

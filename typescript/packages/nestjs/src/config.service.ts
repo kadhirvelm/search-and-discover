@@ -42,7 +42,7 @@ export class ConfigService {
 		);
 		return currentVersion.map((file) => ({
 			file: JSON.parse(readFileSync(join(this.configDirectory, file), "utf-8")),
-			name: file,
+			name: file.replace(`.${exampleConfig.version}.json`, ""),
 		}));
 	}
 
@@ -56,6 +56,13 @@ export class ConfigService {
 
 	private createExampleConfig(): SearchAndDiscoverConfig {
 		return {
+			entryBlock: {
+				rows: [{
+					type: "widget",
+					description: "Example widget description",
+				}],
+				type: "layout-row",
+			},
 			version: "1.0.0",
 		};
 	}

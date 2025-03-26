@@ -1,4 +1,4 @@
-import { Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post } from "@nestjs/common";
 import type { SearchAndDiscoverConfigWithName } from "api";
 // biome-ignore lint/style/useImportType: <explanation>
 import { AppService } from "./app.service";
@@ -13,7 +13,9 @@ export class AppController {
 	}
 
 	@Post("update-config")
-	updateConfig(config: SearchAndDiscoverConfigWithName) {
+	updateConfig(@Body() config: SearchAndDiscoverConfigWithName) {
+		console.log(config, "@@@@@@@");
+
 		return this.appService.updateConfig(config.name, config.file);
 	}
 }

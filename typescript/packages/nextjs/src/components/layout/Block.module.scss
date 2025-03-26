@@ -1,0 +1,61 @@
+@use "@/style/variables" as vars;
+
+%block {
+    display: flex;
+    border: 1px solid vars.$black;
+    border-radius: 6px;
+    gap: 10px;
+    padding: 10px;
+    flex: 1;
+}
+
+.layoutRows {
+    @extend %block;
+    flex-direction: column
+}
+
+.rowContainer {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.layoutColumns {
+    @extend %block;
+}
+
+.columnContainer {
+    display: flex;
+    flex: 1;
+    gap: 10px;
+}
+
+.widget {
+    @extend %block;
+
+    display: flex;
+    flex: 1;
+}
+
+.delete {
+    color: rgba(vars.$red, 0.8);
+    cursor: pointer;
+
+    &:hover {
+        color: vars.$red;
+    }
+}
+
+.preview {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    background: rgba(vars.$muted-text, 0.25);
+    border-radius: 6px;
+}
+
+.previewingDelete {
+    background: rgba(vars.$red, 0.25);
+}
