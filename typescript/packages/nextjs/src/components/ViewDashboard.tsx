@@ -1,3 +1,4 @@
+import { configService } from "@/lib/services/configService";
 import { useAppDispatch, useAppSelector } from "@/lib/store/Provider";
 import {
 	setDisplayState,
@@ -5,7 +6,9 @@ import {
 } from "@/lib/store/dashboard/dashboard";
 import { EditOutlined, EyeOutlined, LeftOutlined } from "@ant-design/icons";
 import { Button, Flex } from "antd";
+import type { Block as BlockType } from "api";
 import styles from "./ViewDashboard.module.scss";
+import { Block } from "./layout/Block";
 
 export const ViewDashboard = () => {
 	const dispatch = useAppDispatch();
@@ -25,8 +28,21 @@ export const ViewDashboard = () => {
 		dispatch(setDisplayState(newState));
 	};
 
+	const updateDashboard = async (updatedBlock: BlockType) => {
+		const updatedDashboard = {
+			...viewingDashboard,
+			file: {
+				...viewingDashboard.file,
+				entryBlock: updatedBlock,
+			},
+		};
+
+		dispatch(setViewingDashboard(updatedDashboard));
+		await configService.updateConfig(updatedDashboard);
+	};
+
 	return (
-		<Flex className={styles.mainContainer} vertical>
+		<Flex className={styles.mainContainer} vertical flex={1} gap={10}>
 			<Flex align="center" justify="space-between">
 				<Flex>
 					<Button onClick={goBackToSelect}>
@@ -52,6 +68,11 @@ export const ViewDashboard = () => {
 					</Button>
 				</Flex>
 			</Flex>
+			<Block
+				block={viewingDashboard.file.entryBlock}
+				isRoot
+				onUpdate={updateDashboard}
+			/>
 		</Flex>
 	);
 };

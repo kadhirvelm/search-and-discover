@@ -1,7 +1,7 @@
 import type { SearchAndDiscoverConfigWithName } from "api";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { configService } from "../configService";
+import { configService } from "../services/configService";
 import { useAppDispatch, useAppSelector } from "../store/Provider";
 import { setViewingDashboard } from "../store/dashboard/dashboard";
 

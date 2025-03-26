@@ -1,3 +1,25 @@
 {
+  "entryBlock": {
+    "rows": [
+      {
+        "type": "layout-row",
+        "rows": [
+          {
+            "description": "",
+            "type": "widget"
+          },
+          {
+            "description": "",
+            "type": "widget"
+          }
+        ]
+      },
+      {
+        "type": "layout-row",
+        "rows": []
+      }
+    ],
+    "type": "layout-row"
+  },
   "version": "1.0.0"
 }
