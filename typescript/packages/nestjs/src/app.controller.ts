@@ -14,8 +14,16 @@ export class AppController {
 
 	@Post("update-config")
 	updateConfig(@Body() config: SearchAndDiscoverConfigWithName) {
-		console.log(config, "@@@@@@@");
-
 		return this.appService.updateConfig(config.name, config.file);
+	}
+
+	@Post("new-config")
+	newConfig() {
+		return this.appService.createNewConfig();
+	}
+
+	@Post("rename-config")
+	renameConfig(@Body() config: { old: SearchAndDiscoverConfigWithName; new: SearchAndDiscoverConfigWithName }) {
+		return this.appService.renameConfig(config.old, config.new);
 	}
 }

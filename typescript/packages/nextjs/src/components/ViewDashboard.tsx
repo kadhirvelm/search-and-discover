@@ -8,6 +8,7 @@ import { EditOutlined, EyeOutlined, LeftOutlined } from "@ant-design/icons";
 import { Button, Flex } from "antd";
 import type { Block as BlockType } from "api";
 import styles from "./ViewDashboard.module.scss";
+import { DashboardName } from "./edit/DashboardName";
 import { EditBlock } from "./layout/EditBlock";
 import { ViewBlock } from "./layout/ViewBlock";
 
@@ -45,11 +46,12 @@ export const ViewDashboard = () => {
 	return (
 		<Flex className={styles.mainContainer} vertical flex={1} gap={10}>
 			<Flex align="center" justify="space-between">
-				<Flex>
+				<Flex align="center" gap={20}>
 					<Button onClick={goBackToSelect}>
 						<LeftOutlined />
 						Back
 					</Button>
+					<DashboardName />
 				</Flex>
 				<Flex>
 					<Button

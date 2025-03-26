@@ -3,6 +3,7 @@ import {
 	mkdirSync,
 	readFileSync,
 	readdirSync,
+	unlinkSync,
 	writeFileSync,
 } from "node:fs";
 import { join } from "node:path";
@@ -54,13 +55,38 @@ export class ConfigService {
 		);
 	}
 
+	public createNewDashboard(): SearchAndDiscoverConfigWithName {
+		const allFiles = readdirSync(this.configDirectory);
+		const latestExample = allFiles
+			.filter((file) => file.toLowerCase().startsWith("example"))
+			.map((file) => file.match(/\d+/g))
+			.map((match) => (match ? Number.parseInt(match[0]) : 0))
+			.sort((a, b) => b - a)[0];
+		
+		const newFileName = `Example-${(latestExample ?? 0) + 1}`;
+		const exampleConfig = this.createExampleConfig();
+	
+		this.updateConfig(newFileName, exampleConfig);
+
+		return {
+			name: newFileName,
+			file: exampleConfig
+		}
+	}
+
+	public deleteConfig(fileName: string) {
+		return unlinkSync(this.getFullPath(fileName));
+	}
+
 	private createExampleConfig(): SearchAndDiscoverConfig {
 		return {
 			entryBlock: {
-				rows: [{
-					type: "widget",
-					description: "Example widget description",
-				}],
+				rows: [
+					{
+						type: "widget",
+						description: "Example widget description",
+					},
+				],
 				type: "layout-row",
 			},
 			version: "1.0.0",
