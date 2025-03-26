@@ -1,23 +1,22 @@
 import { useGetConfigs } from "@/lib/hooks/useGetConfigs";
+import { useAppDispatch, useAppSelector } from "@/lib/store/Provider";
+import { setViewingDashboard } from "@/lib/store/dashboard/dashboard";
 import { Button, Flex } from "antd";
 import type { SearchAndDiscoverConfigWithName } from "api";
 import clsx from "clsx";
 import styles from "./SelectDashboard.module.scss";
 
-export const SelectDashboard = ({
-	availableConfigs,
-	selectedConfig,
-	onSelect,
-}: {
-	availableConfigs: SearchAndDiscoverConfigWithName[] | undefined;
-	selectedConfig: SearchAndDiscoverConfigWithName | undefined;
-	onSelect: (viewConfig: SearchAndDiscoverConfigWithName) => void;
-}) => {
-	if (availableConfigs == null) {
+export const SelectDashboard = () => {
+	const { configs } = useGetConfigs();
+
+	const dispatch = useAppDispatch();
+	const { viewingDashboard } = useAppSelector((s) => s.dashboard);
+
+	if (configs == null) {
 		return;
 	}
 
-	if (availableConfigs.length === 0) {
+	if (configs.length === 0) {
 		return (
 			<Flex vertical flex={1}>
 				<Flex
@@ -35,19 +34,23 @@ export const SelectDashboard = ({
 		);
 	}
 
+	const onSelect = (config: SearchAndDiscoverConfigWithName) => () => {
+		dispatch(setViewingDashboard(config));
+	};
+
 	return (
 		<Flex vertical flex={1}>
-			<Flex className={styles.title}>
-				{availableConfigs.length} dashboard
-				{availableConfigs.length === 1 ? "" : "s"} available
+			<Flex className={styles.title} justify="center">
+				{configs.length} dashboard
+				{configs.length === 1 ? "" : "s"} available
 			</Flex>
 			<Flex className={styles.dashboardContainer} gap={10} vertical>
-				{availableConfigs.map((config) => (
+				{configs.map((config) => (
 					<Flex
 						className={clsx(styles.singleDashboard, {
-							[styles.active]: config.name === selectedConfig?.name,
+							[styles.active]: config.name === viewingDashboard?.name,
 						})}
-						onClick={() => onSelect(config)}
+						onClick={onSelect(config)}
 						key={config.name}
 					>
 						{config.name}

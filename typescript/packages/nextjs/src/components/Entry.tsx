@@ -1,16 +1,27 @@
-import { useGetConfigs } from "@/lib/hooks/useGetConfigs";
-import { Button, Flex } from "antd";
-import type { SearchAndDiscoverConfigWithName } from "api";
-import { useState } from "react";
+import { useSyncUrl } from "@/lib/hooks/useSyncUrl";
+import { useAppSelector } from "@/lib/store/Provider";
+import { Flex } from "antd";
 import styles from "./Entry.module.scss";
 import { SelectDashboard } from "./SelectDashboard";
 
 export const Entry = () => {
-	const { configs } = useGetConfigs();
+	useSyncUrl();
 
-	const [selectedConfig, setSelectedConfig] = useState<
-		SearchAndDiscoverConfigWithName | undefined
-	>(undefined);
+	const isViewingDashboard = useAppSelector(
+		(s) => s.dashboard.viewingDashboard !== undefined,
+	);
+
+	const renderCurrentView = () => {
+		if (isViewingDashboard) {
+			return <Flex>Hello world, this is a dashboard</Flex>;
+		}
+
+		return (
+			<Flex className={styles.configsContainer}>
+				<SelectDashboard />
+			</Flex>
+		);
+	};
 
 	return (
 		<Flex
@@ -20,13 +31,7 @@ export const Entry = () => {
 			justify="center"
 			align="center"
 		>
-			<Flex className={styles.configsContainer}>
-				<SelectDashboard
-					availableConfigs={configs}
-					selectedConfig={selectedConfig}
-					onSelect={setSelectedConfig}
-				/>
-			</Flex>
+			{renderCurrentView()}
 		</Flex>
 	);
 };
