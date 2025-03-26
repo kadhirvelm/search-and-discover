@@ -38,7 +38,7 @@ export class ConfigService {
 		const exampleConfig = this.createExampleConfig();
 
 		const currentVersion = allFiles.filter((file) =>
-			file.endsWith(`${exampleConfig.version}.json`),
+			file.endsWith(`.${exampleConfig.version}.json`),
 		);
 		return currentVersion.map((file) => ({
 			file: JSON.parse(readFileSync(join(this.configDirectory, file), "utf-8")),
@@ -63,6 +63,6 @@ export class ConfigService {
 	private getFullPath = (fileName: string) =>
 		join(
 			this.configDirectory,
-			`${fileName}-${this.createExampleConfig().version}.json`,
+			`${fileName}.${this.createExampleConfig().version}.json`,
 		);
 }

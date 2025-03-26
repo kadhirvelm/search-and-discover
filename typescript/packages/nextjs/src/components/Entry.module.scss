@@ -1,0 +1,15 @@
+@use "@/style/variables" as vars;
+
+.entry {
+    height: 100vh;
+    width: 100vw;
+}
+
+.configsContainer {
+    border: 1px solid vars.$black;
+    border-radius: 5px;
+    width: 500px;
+    height: 500px;
+    background: vars.$white;
+    overflow-y: auto;
+}
