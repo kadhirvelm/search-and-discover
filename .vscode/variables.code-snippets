@@ -1,0 +1,8 @@
+{
+    "Use Variables": {
+        "scope": "scss",
+        "prefix": "vars",
+        "body": ["@use \"@/style/variables\" as vars;"],
+        "description": "Insert @use statement for variables"
+    }
+}

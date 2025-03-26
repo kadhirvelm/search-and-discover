@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
-import "./globals.css";
+import "./globals.scss";
 
 import "@ant-design/v5-patch-for-react-19";
 

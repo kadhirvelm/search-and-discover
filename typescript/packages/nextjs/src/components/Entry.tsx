@@ -1,26 +1,32 @@
-import { configService } from "@/lib/configService";
+import { useGetConfigs } from "@/lib/hooks/useGetConfigs";
 import { Button, Flex } from "antd";
-import type { SearchAndDiscoverConfigs } from "api";
+import type { SearchAndDiscoverConfigWithName } from "api";
 import { useState } from "react";
+import styles from "./Entry.module.scss";
+import { SelectDashboard } from "./SelectDashboard";
 
 export const Entry = () => {
-	const [allConfigs, setAllConfigs] = useState<SearchAndDiscoverConfigs | null>(
-		null,
-	);
+	const { configs } = useGetConfigs();
 
-	const onGetConfigs = async () => {
-		const configs = await configService.getConfigs();
-		setAllConfigs(configs);
-	};
+	const [selectedConfig, setSelectedConfig] = useState<
+		SearchAndDiscoverConfigWithName | undefined
+	>(undefined);
 
 	return (
-		<Flex vertical>
-			<Button onClick={onGetConfigs}>Get all configs</Button>
-            <Flex vertical gap="10px">
-                {allConfigs?.configs.map((config) => (
-                    <div key={config.name}>{JSON.stringify(config, null, 2)}</div>
-                ))}
-            </Flex>
+		<Flex
+			className={styles.entry}
+			vertical
+			flex={1}
+			justify="center"
+			align="center"
+		>
+			<Flex className={styles.configsContainer}>
+				<SelectDashboard
+					availableConfigs={configs}
+					selectedConfig={selectedConfig}
+					onSelect={setSelectedConfig}
+				/>
+			</Flex>
 		</Flex>
 	);
 };
