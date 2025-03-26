@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
-import type { SearchAndDiscoverConfig, SearchAndDiscoverConfigs } from "api";
+import type { SearchAndDiscoverConfig, SearchAndDiscoverConfigWithName, SearchAndDiscoverConfigs } from "api";
 // biome-ignore lint/style/useImportType: <explanation>
 import { ConfigService } from "./config.service";
 
@@ -22,6 +22,17 @@ export class AppService {
 		}
 
 		this.configService.updateConfig(configName, config);
+		return { status: "ok" };
+	}
+
+	public createNewConfig(): SearchAndDiscoverConfigWithName {
+		return this.configService.createNewDashboard();
+	}
+
+	public renameConfig(old: SearchAndDiscoverConfigWithName, newConfig: SearchAndDiscoverConfigWithName) {
+		this.configService.deleteConfig(old.name);
+		this.updateConfig(newConfig.name, newConfig.file);
+
 		return { status: "ok" };
 	}
 }

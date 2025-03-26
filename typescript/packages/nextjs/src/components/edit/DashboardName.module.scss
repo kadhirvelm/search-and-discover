@@ -1,0 +1,12 @@
+@use "@/style/variables" as vars;
+
+.dashboardName {
+    font-size: 25px;
+    font-weight: 500;
+}
+
+.input {
+    display: flex;
+    flex: 1;
+    width: 350px;
+}

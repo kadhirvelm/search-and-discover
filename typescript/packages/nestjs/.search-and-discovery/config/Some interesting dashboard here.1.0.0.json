@@ -1,0 +1,12 @@
+{
+  "entryBlock": {
+    "rows": [
+      {
+        "type": "widget",
+        "description": "Example widget description"
+      }
+    ],
+    "type": "layout-row"
+  },
+  "version": "1.0.0"
+}

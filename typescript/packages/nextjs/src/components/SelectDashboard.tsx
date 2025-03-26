@@ -1,4 +1,5 @@
 import { useGetConfigs } from "@/lib/hooks/useGetConfigs";
+import { configService } from "@/lib/services/configService";
 import { useAppDispatch, useAppSelector } from "@/lib/store/Provider";
 import { setViewingDashboard } from "@/lib/store/dashboard/dashboard";
 import { Button, Flex } from "antd";
@@ -38,6 +39,11 @@ export const SelectDashboard = () => {
 		dispatch(setViewingDashboard(config));
 	};
 
+	const createNewDashboard = async () => {
+		const newConfig = await configService.createNewConfig();
+		dispatch(setViewingDashboard(newConfig));
+	}
+
 	return (
 		<Flex vertical flex={1}>
 			<Flex className={styles.title} justify="center">
@@ -58,7 +64,7 @@ export const SelectDashboard = () => {
 				))}
 			</Flex>
 			<Flex className={styles.newDashboard} align="center" justify="center">
-				<Button>New dashboard</Button>
+				<Button onClick={createNewDashboard}>New dashboard</Button>
 			</Flex>
 		</Flex>
 	);
