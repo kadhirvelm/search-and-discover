@@ -16,7 +16,12 @@
       },
       {
         "type": "layout-row",
-        "rows": []
+        "rows": [
+          {
+            "description": "",
+            "type": "widget"
+          }
+        ]
       }
     ],
     "type": "layout-row"

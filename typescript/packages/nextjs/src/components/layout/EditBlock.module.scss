@@ -36,6 +36,8 @@
 
     display: flex;
     flex: 1;
+    background: vars.$white;
+    color: vars.$muted-text;
 }
 
 .delete {

@@ -8,7 +8,8 @@ import { EditOutlined, EyeOutlined, LeftOutlined } from "@ant-design/icons";
 import { Button, Flex } from "antd";
 import type { Block as BlockType } from "api";
 import styles from "./ViewDashboard.module.scss";
-import { Block } from "./layout/Block";
+import { EditBlock } from "./layout/EditBlock";
+import { ViewBlock } from "./layout/ViewBlock";
 
 export const ViewDashboard = () => {
 	const dispatch = useAppDispatch();
@@ -68,11 +69,15 @@ export const ViewDashboard = () => {
 					</Button>
 				</Flex>
 			</Flex>
-			<Block
-				block={viewingDashboard.file.entryBlock}
-				isRoot
-				onUpdate={updateDashboard}
-			/>
+			{displayState === "edit" ? (
+				<EditBlock
+					block={viewingDashboard.file.entryBlock}
+					isRoot
+					onUpdate={updateDashboard}
+				/>
+			) : (
+				<ViewBlock block={viewingDashboard.file.entryBlock} />
+			)}
 		</Flex>
 	);
 };
