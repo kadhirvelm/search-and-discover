@@ -1,0 +1,13 @@
+@use "@/style/variables" as vars;
+
+.mainContainer {
+    padding: 10px;
+}
+
+.view {
+    border-radius: 6px 0 0 6px;
+}
+
+.edit {
+    border-radius: 0 6px 6px 0;
+}

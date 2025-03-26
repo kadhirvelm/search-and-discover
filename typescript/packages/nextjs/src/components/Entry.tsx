@@ -3,6 +3,7 @@ import { useAppSelector } from "@/lib/store/Provider";
 import { Flex } from "antd";
 import styles from "./Entry.module.scss";
 import { SelectDashboard } from "./SelectDashboard";
+import { ViewDashboard } from "./ViewDashboard";
 
 export const Entry = () => {
 	useSyncUrl();
@@ -13,24 +14,20 @@ export const Entry = () => {
 
 	const renderCurrentView = () => {
 		if (isViewingDashboard) {
-			return <Flex>Hello world, this is a dashboard</Flex>;
+			return <ViewDashboard />;
 		}
 
 		return (
-			<Flex className={styles.configsContainer}>
-				<SelectDashboard />
+			<Flex flex={1} justify="center" align="center">
+				<Flex className={styles.configsContainer}>
+					<SelectDashboard />
+				</Flex>
 			</Flex>
 		);
 	};
 
 	return (
-		<Flex
-			className={styles.entry}
-			vertical
-			flex={1}
-			justify="center"
-			align="center"
-		>
+		<Flex className={styles.entry} vertical flex={1}>
 			{renderCurrentView()}
 		</Flex>
 	);
