@@ -11,6 +11,7 @@ import { Button, Flex } from "antd";
 import type { Block as BlockType } from "api";
 import clsx from "clsx";
 import { useState } from "react";
+import { EditWidget } from "../widget/EditWidget";
 import styles from "./EditBlock.module.scss";
 
 const AddBlock = ({
@@ -33,11 +34,17 @@ const AddBlock = ({
 			onMouseEnter={onPreview}
 			onMouseLeave={onStopPreview}
 		>
-			<Button onClick={() => onAdd({ type: "layout-row", rows: [] })}><InsertRowBelowOutlined /></Button>
+			<Button onClick={() => onAdd({ type: "layout-row", rows: [] })}>
+				<InsertRowBelowOutlined />
+			</Button>
 			<Button onClick={() => onAdd({ type: "layout-column", columns: [] })}>
 				<InsertRowRightOutlined />
 			</Button>
-			<Button onClick={() => onAdd({ description: "", type: "widget" })}>
+			<Button
+				onClick={() =>
+					onAdd({ description: "", dataScript: "", type: "widget" })
+				}
+			>
 				<RobotOutlined />
 			</Button>
 		</Flex>
@@ -228,9 +235,7 @@ export const EditBlock = ({
 			vertical
 		>
 			{maybeRenderDelete()}
-			<Flex flex={1} align="center" justify="center">
-				Widget here
-			</Flex>
+			<EditWidget widget={block} onUpdate={onUpdate} />
 		</Flex>
 	);
 };

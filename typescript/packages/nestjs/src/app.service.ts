@@ -1,11 +1,22 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
-import type { SearchAndDiscoverConfig, SearchAndDiscoverConfigWithName, SearchAndDiscoverConfigs } from "api";
+import type {
+	InvalidPythonCode,
+	SearchAndDiscoverConfig,
+	SearchAndDiscoverConfigWithName,
+	SearchAndDiscoverConfigs,
+	ValidPythonCode,
+} from "api";
 // biome-ignore lint/style/useImportType: <explanation>
 import { ConfigService } from "./config.service";
+// biome-ignore lint/style/useImportType: <explanation>
+import { PythonService } from "./python.service";
 
 @Injectable()
 export class AppService {
-	public constructor(private configService: ConfigService) {
+	public constructor(
+		private configService: ConfigService,
+		private pythonService: PythonService,
+	) {
 		this.configService.ensureConfigDirectory();
 	}
 
@@ -29,10 +40,17 @@ export class AppService {
 		return this.configService.createNewDashboard();
 	}
 
-	public renameConfig(old: SearchAndDiscoverConfigWithName, newConfig: SearchAndDiscoverConfigWithName) {
+	public renameConfig(
+		old: SearchAndDiscoverConfigWithName,
+		newConfig: SearchAndDiscoverConfigWithName,
+	) {
 		this.configService.deleteConfig(old.name);
 		this.updateConfig(newConfig.name, newConfig.file);
 
 		return { status: "ok" };
+	}
+
+	public checkValidPythonCode(code: string): ValidPythonCode | InvalidPythonCode {
+		return this.pythonService.isValidPythonCode(code);
 	}
 }

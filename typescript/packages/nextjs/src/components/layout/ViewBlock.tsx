@@ -12,7 +12,7 @@ export const ViewBlock = ({ block }: { block: Block }) => {
 		);
 	}
 
-    if (block.type === "layout-column") {
+	if (block.type === "layout-column") {
 		return (
 			<div className={styles.layoutColumns}>
 				{block.columns.map((c, index) => (

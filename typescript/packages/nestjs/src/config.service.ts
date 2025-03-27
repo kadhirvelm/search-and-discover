@@ -84,6 +84,7 @@ export class ConfigService {
 				rows: [
 					{
 						type: "widget",
+						dataScript: "return 1+1",
 						description: "Example widget description",
 					},
 				],

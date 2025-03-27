@@ -42,7 +42,7 @@ export const SelectDashboard = () => {
 	const createNewDashboard = async () => {
 		const newConfig = await configService.createNewConfig();
 		dispatch(setViewingDashboard(newConfig));
-	}
+	};
 
 	return (
 		<Flex vertical flex={1}>

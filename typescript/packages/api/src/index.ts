@@ -26,5 +26,16 @@ export interface LayoutColumnBlock {
 
 export interface WidgetBlock {
 	description: string;
+	dataScript: string;
 	type: "widget";
+}
+
+export interface ValidPythonCode {
+	isValid: true;
+	error: undefined;
+}
+
+export interface InvalidPythonCode {
+	isValid: false;
+	error: string;
 }

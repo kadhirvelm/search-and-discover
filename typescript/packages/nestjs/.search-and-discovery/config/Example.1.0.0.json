@@ -19,6 +19,7 @@
         "rows": [
           {
             "description": "",
+            "dataScript": "",
             "type": "widget"
           }
         ]
