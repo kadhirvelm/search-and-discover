@@ -37,6 +37,10 @@ export function useValidatePython(startingCode: string) {
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
+		if (localCopy === "") {
+			return;
+		}
+
 		debouncedCheckPython(localCopy, maybeSetIsValid);
 	}, [localCopy]);
 
