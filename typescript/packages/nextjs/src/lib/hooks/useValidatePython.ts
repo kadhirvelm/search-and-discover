@@ -1,20 +1,6 @@
 import type { InvalidPythonCode, ValidPythonCode } from "api";
-import { debounce } from "lodash-es";
 import { useEffect, useState } from "react";
 import { configService } from "../services/configService";
-
-const checkPythonCode = async (
-	code: string,
-	setIsValid: (
-		code: string,
-		valid: ValidPythonCode | InvalidPythonCode,
-	) => void,
-) => {
-	const result = await configService.checkValidPythonCode(code);
-	setIsValid(code, result);
-};
-
-const debouncedCheckPython = debounce(checkPythonCode, 100);
 
 export function useValidatePython(startingCode: string) {
 	const [localCopy, setLocalCopy] = useState(startingCode);
@@ -35,13 +21,24 @@ export function useValidatePython(startingCode: string) {
 		setIsValid(valid);
 	};
 
+	const checkPythonCode = async (
+		code: string,
+		setIsValid: (
+			code: string,
+			valid: ValidPythonCode | InvalidPythonCode,
+		) => void,
+	) => {
+		const result = await configService.checkValidPythonCode(code);
+		setIsValid(code, result);
+	};
+
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		if (localCopy === "") {
 			return;
 		}
 
-		debouncedCheckPython(localCopy, maybeSetIsValid);
+		checkPythonCode(localCopy, maybeSetIsValid);
 	}, [localCopy]);
 
 	return {

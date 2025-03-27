@@ -2,17 +2,27 @@
   "entryBlock": {
     "rows": [
       {
-        "type": "widget",
-        "dataScript": "print(\"Hello world!!!!!\")\nreturn 1+1",
-        "description": "Example widget description"
-      },
-      {
-        "type": "layout-row",
-        "rows": [
+        "type": "layout-column",
+        "columns": [
           {
-            "description": "",
-            "dataScript": "",
-            "type": "widget"
+            "type": "layout-column",
+            "columns": [
+              {
+                "description": "",
+                "dataScript": "return 1+1",
+                "type": "widget"
+              }
+            ]
+          },
+          {
+            "type": "layout-column",
+            "columns": [
+              {
+                "description": "",
+                "dataScript": "return 1+1",
+                "type": "widget"
+              }
+            ]
           }
         ]
       },
@@ -21,7 +31,7 @@
         "rows": [
           {
             "description": "",
-            "dataScript": "",
+            "dataScript": "return 1+1",
             "type": "widget"
           }
         ]
