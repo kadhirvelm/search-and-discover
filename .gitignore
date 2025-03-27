@@ -16,3 +16,6 @@ dist/
 .turbo
 
 **/__pycache__/
+
+**/.venv/
+**/.env
