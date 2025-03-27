@@ -7,6 +7,7 @@ import {
 import { EditOutlined, EyeOutlined, LeftOutlined } from "@ant-design/icons";
 import { Button, Flex } from "antd";
 import type { Block as BlockType } from "api";
+import { useState } from "react";
 import styles from "./ViewDashboard.module.scss";
 import { DashboardName } from "./edit/DashboardName";
 import { EditBlock } from "./layout/EditBlock";
@@ -14,6 +15,8 @@ import { ViewBlock } from "./layout/ViewBlock";
 
 export const ViewDashboard = () => {
 	const dispatch = useAppDispatch();
+
+	const [displayKey, setDisplayKey] = useState(0);
 
 	const { viewingDashboard } = useAppSelector((s) => s.dashboard);
 	const { displayState } = useAppSelector((s) => s.dashboard);
@@ -41,6 +44,8 @@ export const ViewDashboard = () => {
 
 		dispatch(setViewingDashboard(updatedDashboard));
 		await configService.updateConfig(updatedDashboard);
+
+		setDisplayKey((prev) => prev + 1);
 	};
 
 	return (
@@ -75,6 +80,7 @@ export const ViewDashboard = () => {
 				<EditBlock
 					block={viewingDashboard.file.entryBlock}
 					isRoot
+					key={displayKey}
 					onUpdate={updateDashboard}
 				/>
 			) : (

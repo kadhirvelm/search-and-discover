@@ -6,11 +6,13 @@
         "rows": [
           {
             "description": "",
-            "type": "widget"
+            "type": "widget",
+            "dataScript": "return 1+1"
           },
           {
             "description": "",
-            "type": "widget"
+            "type": "widget",
+            "dataScript": "return 1+1"
           }
         ]
       },

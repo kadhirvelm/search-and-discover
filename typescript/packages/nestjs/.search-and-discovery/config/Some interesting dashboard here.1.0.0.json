@@ -5,6 +5,26 @@
         "type": "widget",
         "dataScript": "print(\"Hello world!!!!!\")\nreturn 1+1",
         "description": "Example widget description"
+      },
+      {
+        "type": "layout-row",
+        "rows": [
+          {
+            "description": "",
+            "dataScript": "",
+            "type": "widget"
+          }
+        ]
+      },
+      {
+        "type": "layout-row",
+        "rows": [
+          {
+            "description": "",
+            "dataScript": "",
+            "type": "widget"
+          }
+        ]
       }
     ],
     "type": "layout-row"

@@ -1,9 +1,7 @@
 import { useValidatePython } from "@/lib/hooks/useValidatePython";
-import { configService } from "@/lib/services/configService";
 import {
 	CheckCircleOutlined,
 	CloseCircleOutlined,
-	DeleteOutlined,
 	UndoOutlined,
 } from "@ant-design/icons";
 import { python } from "@codemirror/lang-python";
@@ -11,20 +9,15 @@ import { python } from "@codemirror/lang-python";
 import CodeMirror from "@uiw/react-codemirror";
 import { Button, Flex, Input, Spin, Tooltip } from "antd";
 import type { WidgetBlock } from "api";
-import { useRef } from "react";
+import { Resizer } from "../general/Resizer";
 import styles from "./EditWidget.module.scss";
 
 export const EditWidget = ({
 	widget,
 	onUpdate,
 }: { widget: WidgetBlock; onUpdate: (newWidget: WidgetBlock) => void }) => {
-	const codeContainer = useRef<HTMLDivElement>(null);
-
 	const { localCopy, setLocalCopy, isValid, canDiscard, onReset } =
 		useValidatePython(widget.dataScript);
-
-	const codeHeight = `${codeContainer.current?.clientHeight}px`;
-	const codeWidth = `${(codeContainer.current?.clientWidth ?? 0) * 0.99}px`;
 
 	const onSave = () => {
 		onUpdate({ ...widget, dataScript: localCopy });
@@ -40,6 +33,10 @@ export const EditWidget = ({
 	};
 
 	const renderCurrentStatus = () => {
+		if (localCopy === "") {
+			return;
+		}
+
 		if (isValid === undefined) {
 			return <Spin />;
 		}
@@ -74,26 +71,24 @@ export const EditWidget = ({
 						)}
 					</Flex>
 				</Flex>
-				<Flex
-					onKeyDown={checkForSave}
-					ref={codeContainer}
-					className={styles.codeEditor}
-					flex={1}
-				>
-					<CodeMirror
-						autoFocus
-						editable
-						height={codeHeight}
-						width={codeWidth}
-						value={localCopy}
-						key={codeContainer.current == null ? "null" : "not-null"}
-						extensions={[python()]}
-						onChange={setLocalCopy}
-						basicSetup={{
-							lineNumbers: true,
-							tabSize: 4,
-						}}
-					/>
+				<Flex onKeyDown={checkForSave} className={styles.codeEditor} flex={1}>
+					<Resizer>
+						{({ width, height }) => (
+							<CodeMirror
+								autoFocus
+								editable
+								height={`${height}px`}
+								width={`${width - 5}px`}
+								value={localCopy}
+								extensions={[python()]}
+								onChange={setLocalCopy}
+								basicSetup={{
+									lineNumbers: true,
+									tabSize: 4,
+								}}
+							/>
+						)}
+					</Resizer>
 				</Flex>
 			</Flex>
 		</Flex>
