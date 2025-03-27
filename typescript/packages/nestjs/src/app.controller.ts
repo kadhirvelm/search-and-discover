@@ -26,4 +26,9 @@ export class AppController {
 	renameConfig(@Body() config: { old: SearchAndDiscoverConfigWithName; new: SearchAndDiscoverConfigWithName }) {
 		return this.appService.renameConfig(config.old, config.new);
 	}
+
+	@Post("check-python")
+	checkPython(@Body() code: { code: string }) {
+		return this.appService.checkValidPythonCode(code.code);
+	}
 }

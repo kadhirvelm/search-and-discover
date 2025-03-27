@@ -1,0 +1,23 @@
+@use "@/style/variables" as vars;
+
+.codeEditor {
+    border: 1px solid vars.$black;
+    border-radius: 3px;
+    padding: 5px;
+}
+
+.valid {
+    color: vars.$green;
+}
+
+.invalid {
+    color: vars.$red;
+}
+
+.undo {
+    cursor: pointer;
+
+    &:hover {
+        color: vars.$black;
+    }
+}

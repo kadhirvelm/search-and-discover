@@ -3,6 +3,7 @@
     "rows": [
       {
         "type": "widget",
+        "dataScript": "print(\"Hello world!!!!!\")\nreturn 1+1",
         "description": "Example widget description"
       }
     ],

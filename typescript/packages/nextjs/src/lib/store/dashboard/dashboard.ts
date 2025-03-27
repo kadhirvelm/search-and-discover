@@ -8,7 +8,7 @@ export interface DashboardState {
 
 const initialState: DashboardState = {
 	viewingDashboard: undefined,
-	displayState: "edit"
+	displayState: "edit",
 };
 
 const dashboardSlice = createSlice({
@@ -20,7 +20,7 @@ const dashboardSlice = createSlice({
 		},
 		setDisplayState(state, action) {
 			state.displayState = action.payload;
-		}
+		},
 	},
 });
 
