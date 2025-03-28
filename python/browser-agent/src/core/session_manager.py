@@ -19,6 +19,9 @@ def get_session(session_id: str) -> Session:
         raise ValueError(f"Session '{session_id}' not found.")
     return session
 
+def get_all_session_ids():
+    return list(_sessions.keys())
+
 def send_command(session_id: str, code: str) -> str:
     session = get_session(session_id)
     return session.send(code)
