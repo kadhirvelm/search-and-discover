@@ -5,7 +5,7 @@ import styles from "./ViewBlock.module.scss";
 export const ViewBlock = ({ block }: { block: Block }) => {
 	if (block.type === "layout-row") {
 		return (
-			<div className={styles.layoutRows}>
+			<div className={styles.layoutRows} style={{ flex: block.space ?? 1 }}>
 				{block.rows.map((c, index) => (
 					<ViewBlock block={c} key={`column-${index}`} />
 				))}
@@ -15,7 +15,7 @@ export const ViewBlock = ({ block }: { block: Block }) => {
 
 	if (block.type === "layout-column") {
 		return (
-			<div className={styles.layoutColumns}>
+			<div className={styles.layoutColumns} style={{ flex: block.space ?? 1 }}>
 				{block.columns.map((c, index) => (
 					<ViewBlock block={c} key={`column-${index}`} />
 				))}
@@ -23,5 +23,5 @@ export const ViewBlock = ({ block }: { block: Block }) => {
 		);
 	}
 
-	return <div className={styles.widget}><SyntaxHighlighter language="python">{block.dataScript}</SyntaxHighlighter></div>;
+	return <div className={styles.widget} style={{ flex: block.space ?? 1 }}><SyntaxHighlighter language="python">{block.dataScript}</SyntaxHighlighter></div>;
 };

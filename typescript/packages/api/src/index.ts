@@ -16,17 +16,20 @@ export type Block = LayoutRowBlock | LayoutColumnBlock | WidgetBlock;
 
 export interface LayoutRowBlock {
 	rows: Block[];
+	space?: number;
 	type: "layout-row";
 }
 
 export interface LayoutColumnBlock {
 	columns: Block[];
+	space?: number;
 	type: "layout-column";
 }
 
 export interface WidgetBlock {
 	description: string;
 	dataScript: string;
+	space?: number;
 	type: "widget";
 }
 
