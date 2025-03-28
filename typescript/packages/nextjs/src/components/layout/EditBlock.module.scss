@@ -2,11 +2,10 @@
 
 %block {
     display: flex;
-    border: 1px solid vars.$black;
+    border: 1px solid rgba(vars.$black, 0.3);
     border-radius: 6px;
     gap: 10px;
-    padding: 10px;
-    flex: 1;
+    padding: 5px;
 }
 
 .layoutRows {
@@ -51,7 +50,7 @@
 
 .preview {
     display: flex;
-    flex: 1;
+    padding: 5px;
     justify-content: center;
     align-items: center;
     background: rgba(vars.$muted-text, 0.25);
@@ -60,4 +59,26 @@
 
 .previewingDelete {
     background: rgba(vars.$red, 0.25);
+}
+
+.row {
+    > :nth-child(1) {
+        border-radius: 6px 0 0 6px;
+    }
+
+    > :nth-child(2) {
+        margin-left: -1px;
+        border-radius: 0 6px 6px 0;
+    }
+}
+
+.column {
+    > :nth-child(1) {
+        border-radius: 6px 6px 0 0;
+    }
+
+    > :nth-child(2) {
+        margin-top: -1px;
+        border-radius: 0 0 6px 6px;
+    }
 }
