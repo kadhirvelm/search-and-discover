@@ -9,20 +9,24 @@ def create_session():
     print(f"Created session: {session_id}")
     return session_id
 
-def run_code(session_id, code):
+def start_client(session_id, starting_page="https://www.google.com", act_prompt=None):
     payload = {
-        "session_id": session_id,
-        "code": code
+         "session_id": session_id,
+         "starting_page": starting_page,
+         "act_prompt": act_prompt  # Can be None if no action is needed
     }
-    response = requests.post(f"{BASE_URL}/run-code", json=payload)
+    response = requests.post(f"{BASE_URL}/start-client", json=payload)
     response.raise_for_status()
     result = response.json()
-    print(f"Code: {code}, Result: {result}")
+    print(f"Started client for session {session_id} with result: {result}")
     return result
 
 if __name__ == "__main__":
     session_id = create_session()
-    # run_code(session_id, "1 + 1")
-    run_code(session_id, "client=NovaAct(starting_page='https://www.google.com')")
-    run_code(session_id, "client.start()")
-    run_code(session_id, "client.act('search for potatoes')")
+    # Example: start the client without a specific client action.
+    # This will send __CLIENT_INIT__ and __CLIENT_START__ commands.
+    start_client(session_id, starting_page="https://www.google.com")
+    
+    # Alternatively, if you want to perform an action (like "search for potatoes"),
+    # include the act_prompt parameter:
+    # start_client(session_id, starting_page="https://www.google.com", act_prompt="search for potatoes")
