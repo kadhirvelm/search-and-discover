@@ -12,15 +12,3 @@
 .layoutColumns {
     @extend %block;
 }
-
-.widget {
-    @extend %block;
-
-    justify-content: center;
-    align-items: center;
-    border: 1px solid vars.$black;
-    border-radius: 6px;
-    margin: 10px;
-    background: vars.$white;
-    color: vars.$muted-text;
-}

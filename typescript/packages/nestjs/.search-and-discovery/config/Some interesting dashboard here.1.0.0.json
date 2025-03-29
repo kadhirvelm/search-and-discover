@@ -9,6 +9,11 @@
             "description": "",
             "dataScript": "",
             "type": "widget"
+          },
+          {
+            "description": "",
+            "dataScript": "",
+            "type": "widget"
           }
         ],
         "space": 2

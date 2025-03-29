@@ -1,0 +1,18 @@
+@use "@/style/variables" as vars;
+
+.widget {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid vars.$black;
+    border-radius: 6px;
+    margin: 10px;
+    background: vars.$white;
+    color: vars.$muted-text;
+    padding: 2px 1px;
+    overflow: hidden;
+
+    > iframe {
+        border-radius: 6px;
+    }
+}
