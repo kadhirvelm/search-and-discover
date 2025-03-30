@@ -32,7 +32,7 @@ def main():
     app = create_app()
     atexit.register(cleanup_logs)
 
-    app.run()
+    app.run(debug=True)
 
 if __name__ == "__main__":
     main()

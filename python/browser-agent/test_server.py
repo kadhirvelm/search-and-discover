@@ -55,7 +55,7 @@ if __name__ == "__main__":
     # # This will send __CLIENT_INIT__ and __CLIENT_START__ commands.
     start_client(session_id, starting_page="https://www.amazon.com")
 
-    run_code(session_id, "test = 1+1\nprint(test)\ntest = test + 1\nprint(test)")
+    run_code(session_id, "client.act('search for coffee')")
 
     get_logs(session_id)
     # Alternatively, if you want to perform an action (like "search for potatoes"),

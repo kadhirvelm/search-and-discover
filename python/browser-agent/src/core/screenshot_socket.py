@@ -6,7 +6,7 @@ import time
 screenshot_requests = queue.Queue()
 server_sock_global = None
 
-def start_screenshot_socket(client, host="127.0.0.1", port=0):
+def start_screenshot_socket(host="127.0.0.1", port=0):
     print(f"[DEBUG] starting screenshot socket for {port} port")
     global server_sock_global
     server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -26,6 +26,7 @@ def start_screenshot_socket(client, host="127.0.0.1", port=0):
                 screenshot_requests.put(conn)
             except OSError:
                 break  # socket closed
+
     threading.Thread(target=accept_loop, daemon=True).start()
     return actual_port
 
