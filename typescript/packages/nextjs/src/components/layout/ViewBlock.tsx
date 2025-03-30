@@ -1,5 +1,5 @@
 import type { Block } from "api";
-import SyntaxHighlighter from "react-syntax-highlighter";
+import { ViewWidget } from "../widget/ViewWidget";
 import styles from "./ViewBlock.module.scss";
 
 export const ViewBlock = ({ block }: { block: Block }) => {
@@ -23,5 +23,5 @@ export const ViewBlock = ({ block }: { block: Block }) => {
 		);
 	}
 
-	return <div className={styles.widget} style={{ flex: block.space ?? 1 }}><SyntaxHighlighter language="python">{block.dataScript}</SyntaxHighlighter></div>;
+	return <ViewWidget widget={block} />;
 };
