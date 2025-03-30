@@ -118,16 +118,17 @@ while not should_exit:
         line = sys.stdin.readline()
         if line:
             cmd = line.strip()
-            if cmd:
+            deserialized_cmd = cmd.replace("\\n", "\n").replace("\\r", "\r")
+            if deserialized_cmd:
                 try:
-                    print(f"[STARTING_COMMAND] {cmd}")
+                    print(f"[STARTING_COMMAND] {deserialized_cmd}")
 
                     exec_command_global = exec_globals.copy()
                     exec_command_global["print"] = partial(builtins.print, "[USER_COMMAND]", flush=True)
                     # Execute the command immediately.
-                    result = exec(cmd, exec_command_global)
+                    result = exec(deserialized_cmd, exec_command_global)
 
-                    print(f"[COMPLETED_COMMAND] {cmd} {result}")
+                    print(f"[COMPLETED_COMMAND] {deserialized_cmd} {result}")
                 except Exception as e:
                     print("[ERROR] " + str(e))
                     sys.exit(1)

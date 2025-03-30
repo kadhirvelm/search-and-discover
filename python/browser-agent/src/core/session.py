@@ -68,7 +68,10 @@ class Session:
         the process exits with sys.exit(1) and the error is printed.
         Otherwise, it flushes "success" and returns a success result.
         """
-        self.stdin.write(command + "\n")
+        # sys.stdin.readline will keep reading until it finds a newline character, so to get our multi-line python scripts in we need to serialize and deserialize it
+        # because command_runner is a continually running process
+        serialized_command = command.replace("\n", "\\n").replace("\r", "\\r")
+        self.stdin.write(serialized_command + "\n")
         self.stdin.flush()
 
         self.watch_log_file_for("[STARTING_COMMAND]")

@@ -2,8 +2,6 @@
 
 .widget {
     display: flex;
-    justify-content: center;
-    align-items: center;
     border: 1px solid vars.$black;
     border-radius: 6px;
     margin: 10px;
@@ -15,4 +13,8 @@
     > iframe {
         border-radius: 6px;
     }
+}
+
+.logs {
+    display: flex;
 }

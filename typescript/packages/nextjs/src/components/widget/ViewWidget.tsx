@@ -1,38 +1,88 @@
+import { browserAgentService } from "@/lib/services/browserAgentService";
+import { Button, Flex, Spin } from "antd";
 import type { WidgetBlock } from "api";
-import { useEffect, useRef } from "react";
-import SyntaxHighlighter from "react-syntax-highlighter";
+import { useRef, useState } from "react";
 import styles from "./ViewWidget.module.scss";
 
-/* <SyntaxHighlighter language="python">
-    {widget.dataScript}
-</SyntaxHighlighter> */
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+function useRunPython(code: string) {
+	const [sessionId, setSessionId] = useState<string | null>(null);
+	const [sessionLogs, setSessionLogs] = useState<string>("");
+
+	const [isRunning, setIsRunning] = useState(false);
+	const runningRef = useRef(false);
+
+	const onStartRun = async () => {
+		setIsRunning(true);
+		runningRef.current = true;
+
+		const { session_id: sessionId } =
+			await browserAgentService.createNewSession();
+		setSessionId(sessionId);
+
+		pollForLogs(sessionId);
+
+		await browserAgentService.startClient(sessionId);
+		await browserAgentService.runCode(sessionId, code);
+
+		setIsRunning(false);
+		runningRef.current = false;
+	};
+
+	const pollForLogs = async (sessionId: string) => {
+		const { logs } = await browserAgentService.getSessionLogs(sessionId);
+		setSessionLogs(logs);
+		await delay(100);
+
+		if (!runningRef.current) {
+			return;
+		}
+
+		pollForLogs(sessionId);
+	};
+
+	return {
+		sessionLogs,
+		isRunning,
+		onStartRun,
+		streamUrl: browserAgentService.streamSession(sessionId),
+	};
+}
 
 export const ViewWidget = ({ widget }: { widget: WidgetBlock }) => {
-	const iframeRef = useRef<HTMLIFrameElement>(null);
-
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-    useEffect(() => {
-        if (iframeRef.current == null || iframeRef.current.contentWindow == null) {
-            return;
-        }
-
-        console.log(iframeRef.current.contentWindow.scrollBy);
-        iframeRef.current.contentWindow?.scrollBy({ top: 1000 });
-    }, [iframeRef.current])
+	const { sessionLogs, isRunning, onStartRun, streamUrl } = useRunPython(
+		widget.dataScript,
+	);
 
 	return (
 		<div className={styles.widget} style={{ flex: widget.space ?? 1 }}>
-			<iframe
-				title="amzn"
-				src="https://www.google.com/maps/embed/v1/place?key=AIzaSyC6uWRmJgoYd5wx-198bfnO41WblQ5HHig&q=Ch%C4%ABsai%20Sushi%20Club%2C3369%20Mission%20Street%2CSan%20Francisco%2CCA%2C94110"
-				style={{
-					display: "flex",
-					flex: 1,
-					height: "100%",
-					width: "100%",
-				}}
-                ref={iframeRef}
-			/>
+			<Flex flex={3}>
+				{streamUrl === undefined || isRunning ? (
+					<Spin />
+				) : (
+					<iframe
+						title="datascript"
+						src={streamUrl}
+						style={{
+							display: "flex",
+							flex: 1,
+							height: "100%",
+							width: "100%",
+						}}
+					/>
+				)}
+			</Flex>
+			<Flex flex={1} vertical gap={10} style={{ padding: "10px" }}>
+				<Flex>
+					{isRunning ? <Spin /> : <Button onClick={onStartRun}>Run</Button>}
+				</Flex>
+				<Flex vertical>
+					{sessionLogs.split("\n").map((line, index) => (
+						<Flex key={index}>{line}</Flex>
+					))}
+				</Flex>
+			</Flex>
 		</div>
 	);
 };
