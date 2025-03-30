@@ -3,19 +3,10 @@ from core.session_manager import create_session, close_session, get_all_session_
 from core.generate_jpeg_frame import generate_mjpeg_frames
 
 def register_routes(app):
-    @app.route("/run-code", methods=["POST"])
-    def run_code():
-        data = request.get_json()
-        session_id = data.get("session_id")
-        code = data.get("code")
-
-        if not session_id:
-            return jsonify({"error": "Missing session_id"}), 400
-        if not code:
-            return jsonify({"error": "Missing code"}), 400
-
-        result = send_command(session_id, code)
-        return jsonify({"result": result})
+    @app.route("/create-session", methods=["POST"])
+    def create_new_session():
+        new_session_id = create_session()
+        return jsonify({"session_id": new_session_id})
     
     @app.route("/start-client", methods=["POST"])
     def start_client():
@@ -39,11 +30,20 @@ def register_routes(app):
             return jsonify({"error": str(e)}), 404
         result = session.start_client(starting_page)
         return jsonify({"result": result})
-    
-    @app.route("/create-session", methods=["POST"])
-    def create_new_session():
-        new_session_id = create_session()
-        return jsonify({"session_id": new_session_id})
+
+    @app.route("/run-code", methods=["POST"])
+    def run_code():
+        data = request.get_json()
+        session_id = data.get("session_id")
+        code = data.get("code")
+
+        if not session_id:
+            return jsonify({"error": "Missing session_id"}), 400
+        if not code:
+            return jsonify({"error": "Missing code"}), 400
+
+        result = send_command(session_id, code)
+        return jsonify({"result": result})
     
     @app.route("/get-session-logs", methods=["POST"])
     def get_session_logs():
@@ -61,26 +61,7 @@ def register_routes(app):
             return jsonify({"logs": logs})
         except ValueError as e:
             return jsonify({"error": str(e)}), 404
-
-    @app.route("/list-sessions", methods=["GET"])
-    def list_sessions():
-        """
-        Returns a JSON list of currently active session IDs.
-        """
-        session_ids = get_all_session_ids()
-        return jsonify({"sessions": session_ids})
-    
-    @app.route("/end-session", methods=["POST"])
-    def close_existing_session():
-        data = request.get_json()
-        session_id = data.get("session_id")
-
-        if not session_id:
-            return jsonify({"error": "Missing session id"})
         
-        close_session(session_id)
-        return jsonify({"success": True})
-    
     @app.route("/session/<string:session_id>/stream.mjpeg", methods=["GET"])
     def stream_mjpeg(session_id):
         try:
@@ -95,3 +76,22 @@ def register_routes(app):
             stream_with_context(generate_mjpeg_frames(session_id, port)),
             mimetype='multipart/x-mixed-replace; boundary=frame'
         )
+    
+    @app.route("/end-session", methods=["POST"])
+    def close_existing_session():
+        data = request.get_json()
+        session_id = data.get("session_id")
+
+        if not session_id:
+            return jsonify({"error": "Missing session id"})
+        
+        close_session(session_id)
+        return jsonify({"success": True})
+    
+    @app.route("/list-sessions", methods=["GET"])
+    def list_sessions():
+        """
+        Returns a JSON list of currently active session IDs.
+        """
+        session_ids = get_all_session_ids()
+        return jsonify({"sessions": session_ids})
