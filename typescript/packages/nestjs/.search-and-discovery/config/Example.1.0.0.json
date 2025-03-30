@@ -6,22 +6,7 @@
         "rows": [
           {
             "description": "",
-            "type": "widget",
-            "dataScript": "return 1+1"
-          },
-          {
-            "description": "",
-            "type": "widget",
-            "dataScript": "return 1+1"
-          }
-        ]
-      },
-      {
-        "type": "layout-row",
-        "rows": [
-          {
-            "description": "",
-            "dataScript": "",
+            "dataScript": "some_result = client.act(\"Search for coffee beans\")\nprint(some_result)\nprint(\"successfully searched for coffee beans\")\n",
             "type": "widget"
           }
         ]

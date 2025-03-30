@@ -16,7 +16,8 @@ export interface SessionLogs {
 
 class BrowserAgentService {
     public async createNewSession() {
-        const rawResponse = await fetch("http://localhost:500/create-session", {
+        const rawResponse = await fetch("http://localhost:5000/create-session", {
+            method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
@@ -26,7 +27,7 @@ class BrowserAgentService {
     }
 
     public async startClient(sessionId: string, startingPage?: string) {
-        const rawResponse = await fetch("http://localhost:500/start-client", {
+        const rawResponse = await fetch("http://localhost:5000/start-client", {
             method: "POST",
             headers: {
 				"Content-Type": "application/json",
@@ -38,7 +39,7 @@ class BrowserAgentService {
     }
 
     public async runCode(sessionId: string, code: string) {
-        const rawResponse = await fetch("http://localhost:500/run-code", {
+        const rawResponse = await fetch("http://localhost:5000/run-code", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -50,7 +51,7 @@ class BrowserAgentService {
     }
 
     public async getSessionLogs(sessionId: string) {
-        const rawResponse = await fetch("http://localhost:500/get-session-logs", {
+        const rawResponse = await fetch("http://localhost:5000/get-session-logs", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -61,12 +62,16 @@ class BrowserAgentService {
         return response as SessionLogs;
     }
 
-    public async streamSession(sessionId: string) {
-        return `http://localhost:500/session/${sessionId}/stream.mjpeg`;
+    public streamSession(sessionId: string | null) {
+        if (sessionId == null) {
+            return;
+        }
+
+        return `http://localhost:5000/session/${sessionId}/stream.mjpeg`;
     }
 
     public async stopClient(sessionId: string) {
-        const rawResponse = await fetch("http://localhost:500/end-session", {
+        const rawResponse = await fetch("http://localhost:5000/end-session", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

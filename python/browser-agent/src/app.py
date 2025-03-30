@@ -1,12 +1,16 @@
 from flask import Flask
+from flask_cors import CORS
 from dotenv import load_dotenv
 import atexit
 import os
+import logging
 
 from api.endpoints import register_routes
 
 def create_app():
     app = Flask(__name__)
+    CORS(app)
+
     load_dotenv()
     register_routes(app)
     return app
@@ -28,7 +32,7 @@ def main():
     app = create_app()
     atexit.register(cleanup_logs)
 
-    app.run(debug=True)
+    app.run()
 
 if __name__ == "__main__":
     main()
