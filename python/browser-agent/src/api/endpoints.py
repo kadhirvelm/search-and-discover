@@ -31,20 +31,36 @@ def register_routes(app):
         data = request.get_json()
         session_id = data.get("session_id")
         starting_page = data.get("starting_page", "https://www.google.com")
-        act_prompt = data.get("act_prompt")  # May be None
         if not session_id:
             return jsonify({"error": "Missing session_id"}), 400
         try:
             session = get_session(session_id)
         except ValueError as e:
             return jsonify({"error": str(e)}), 404
-        result = session.start_client(starting_page, act_prompt)
+        result = session.start_client(starting_page)
         return jsonify({"result": result})
     
     @app.route("/create-session", methods=["POST"])
     def create_new_session():
         new_session_id = create_session()
         return jsonify({"session_id": new_session_id})
+    
+    @app.route("/get-session-logs", methods=["POST"])
+    def get_session_logs():
+        """
+        Returns the logs of a session.
+        """
+        data = request.get_json()
+        session_id = data.get("session_id")
+        if not session_id:
+            return jsonify({"error": "Missing session_id"}), 400
+
+        try:
+            session = get_session(session_id)
+            logs = session.get_logs()
+            return jsonify({"logs": logs})
+        except ValueError as e:
+            return jsonify({"error": str(e)}), 404
 
     @app.route("/list-sessions", methods=["GET"])
     def list_sessions():

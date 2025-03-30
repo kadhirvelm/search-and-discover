@@ -3,16 +3,17 @@ import sys
 import os
 import time
 import select
+from watchdog.events import FileSystemEvent, FileSystemEventHandler
+from watchdog.observers import Observer
 
-LOG_FILE = os.environ.get("LOG_FILE", "/var/tmp/search-and-discover/command_runner.logs")
 
-def log_to_file(session_id, line):
-    with open(LOG_FILE, "a") as f:
-        f.write(f"[{session_id}] {line}\n")
+# LOG_FILE = os.environ.get("LOG_FILE", "/var/tmp/search-and-discover/command_runner.logs")
 
 class Session:
     def __init__(self, session_id: str):
         self.session_id = session_id
+        self.ensure_log_file()
+
         self.proc = subprocess.Popen(
             [sys.executable, "-u", "src/core/command_runner.py", session_id],
             stdin=subprocess.PIPE,
@@ -22,20 +23,42 @@ class Session:
             bufsize=1
         )
         self.stdin = self.proc.stdin
-        self.stdout = self.proc.stdout
 
         self.screenshot_port = None
 
-        # Wait for the "[ready]" message.
-        while True:
-            line = self.stdout.readline()
-            if not line:
-                # Subprocess exited prematurely.
-                break
-            # Optionally, log the output:
-            # log_to_file(self.session_id, line.rstrip())
-            if "[ready]" in line:
-                break
+        self.last_log_position = 0
+        self.watch_log_file_for("[READY]")
+
+    def get_logs(self):
+        """
+        Returns the logs of the session.
+        """
+        log_file_path = f"./logs/{self.session_id}.log"
+        with open(log_file_path, "r") as log_file:
+            return log_file.read()
+
+    def ensure_log_file(self):
+        """
+        Ensures the log file exists.
+        """
+        log_file_path = f"./logs/{self.session_id}.log"
+        if not os.path.exists(log_file_path):
+            with open(log_file_path, "w") as log_file:
+                log_file.write("")
+
+    def watch_log_file_for(self, break_trigger: str):
+        """
+        Watches the log file for any new logs lines and reacts accordingly
+        """
+        with open(f"./logs/{self.session_id}.log", "r") as file:
+            file.seek(self.last_log_position)
+            while True:
+                line = file.readline()
+                self.last_log_position = file.tell()
+                if line.strip().startswith(break_trigger):
+                    return line
+                else:
+                    time.sleep(0.1)
 
     def send(self, command: str):
         """
@@ -48,29 +71,20 @@ class Session:
         self.stdin.write(command + "\n")
         self.stdin.flush()
 
-        # Allow a brief delay for the command to process.
-        time.sleep(0.1)
-        output_lines = []
+        self.watch_log_file_for("[STARTING_COMMAND]")
+        self.watch_log_file_for("[COMPLETED_COMMAND]")
 
-        # Use select to non-blockingly drain available output.
-        while True:
-            ready, _, _ = select.select([self.stdout], [], [], 0.05)
-            if ready:
-                line = self.stdout.readline()
-                if not line:
-                    break
-                output_lines.append(line.rstrip("\n"))
-            else:
-                break
+        return {"result": "success"}
+    
+    def set_screenshot_port(self, log_line: str):
+        port_str = log_line.split(":", 1)[1].strip()
+        try:
+            self.screenshot_port = int(port_str)
+        except ValueError:
+            print("[ERROR] Failed to parse screenshot port", flush=True)
+            sys.exit(1)
 
-        # If any output line starts with "[error]", exit with failure.
-        for line in output_lines:
-            if line.startswith("[error]"):
-                sys.exit(1)
-        print(f"{command} ran successfully", flush=True)
-        return {"stdout": "\n".join(output_lines), "result": "success"}
-
-    def start_client(self, starting_page: str, act_prompt: str = None):
+    def start_client(self, starting_page: str):
         """
         Sends the explicit actions to the command runner.
         If act_prompt is provided, sends:
@@ -82,28 +96,13 @@ class Session:
         """
         res_init = self.send(f"__CLIENT_INIT__:{starting_page}")
         res_start = self.send("__CLIENT_START__")
-        res_act = None
-        if act_prompt:
-            res_act = self.send(f"__CLIENT_ACT__:{act_prompt}")
 
-        while True:
-            line = self.stdout.readline()
-            if not line:
-                break
-            if line.startswith("[screenshot_port]:"):
-                port_str = line.split(":", 1)[1].strip()
-                try:
-                    self.screenshot_port = int(port_str)
-                    print(f"[DEBUG] Stored screenshot port: {self.screenshot_port}", flush=True)
-                except ValueError:
-                    print("[error] Failed to parse screenshot port", flush=True)
-                    sys.exit(1)
-                break
+        screenshot_port = self.watch_log_file_for("[screenshot_port]:")
+        self.set_screenshot_port(screenshot_port)
 
-        return {"init": res_init, "start": res_start, "act": res_act}
+        return {"init": res_init, "start": res_start, "screenshot_port": self.screenshot_port}
 
     def close(self):
         self.send("resolve()")
-        self.stdin.close()
-        self.stdout.close()
-        self.proc.wait()
+        self.observer.stop()
+        self.observer.join()
