@@ -42,3 +42,14 @@ export interface InvalidPythonCode {
 	isValid: false;
 	error: string;
 }
+
+export interface TransformedCode {
+	transformedCode: string;
+}
+
+export interface BoundingBox {
+    top: number;
+    left: number;
+    width: number;
+    height: number;
+}

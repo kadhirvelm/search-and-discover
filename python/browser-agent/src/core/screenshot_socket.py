@@ -2,6 +2,8 @@ import socket
 import threading
 import queue
 import time
+from PIL import Image
+import io
 
 screenshot_requests = queue.Queue()
 server_sock_global = None
@@ -43,8 +45,16 @@ def process_screenshot_requests(client):
         conn = screenshot_requests.get()
         try:
             screenshot = client.page.screenshot(type="jpeg")
+            dimensions = client.page.evaluate("() => ({ width: window.innerWidth, height: window.innerHeight })")
+
+            image = Image.open(io.BytesIO(screenshot))  # Open the screenshot as an image
+            resized_image = image.resize((dimensions["width"], dimensions["height"]))  # Resize the image
+            output_buffer = io.BytesIO()
+            resized_image.save(output_buffer, format="JPEG")
+            resized_screenshot = output_buffer.getvalue()
+
             # print(f"[DEBUG] Captured screenshot size: {len(screenshot)} bytes", flush=True)
-            conn.sendall(screenshot)
+            conn.sendall(resized_screenshot)
         except Exception as e:
             print(f"[DEBUG] Screenshot error: {e}", flush=True)
         finally:

@@ -1,6 +1,6 @@
 import type { InvalidPythonCode, ValidPythonCode } from "api";
 import { useEffect, useState } from "react";
-import { configService } from "../services/configService";
+import { codeService } from "../services/codeService";
 
 export function useValidatePython(startingCode: string) {
 	const [localCopy, setLocalCopy] = useState(startingCode);
@@ -28,7 +28,7 @@ export function useValidatePython(startingCode: string) {
 			valid: ValidPythonCode | InvalidPythonCode,
 		) => void,
 	) => {
-		const result = await configService.checkValidPythonCode(code);
+		const result = await codeService.checkValidPythonCode(code);
 		setIsValid(code, result);
 	};
 
