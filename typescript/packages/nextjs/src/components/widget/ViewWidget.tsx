@@ -3,6 +3,7 @@ import { Button, Flex, Spin } from "antd";
 import type { WidgetBlock } from "api";
 import { useRef, useState } from "react";
 import styles from "./ViewWidget.module.scss";
+import { ResizedStream } from "./stream/ResizedStream";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -42,11 +43,15 @@ function useRunPython(code: string) {
 		pollForLogs(sessionId);
 	};
 
+	const canViewStream = sessionLogs.includes("[Entering screenshot mode]");
+
 	return {
 		sessionLogs,
 		isRunning,
 		onStartRun,
-		streamUrl: browserAgentService.streamSession(sessionId),
+		streamUrl: canViewStream
+			? browserAgentService.streamSession(sessionId)
+			: undefined,
 	};
 }
 
@@ -55,32 +60,55 @@ export const ViewWidget = ({ widget }: { widget: WidgetBlock }) => {
 		widget.dataScript,
 	);
 
+	const renderFrame = () => {
+		if (streamUrl === undefined) {
+			return (
+				<Flex
+					className={styles.waiting}
+					flex={1}
+					justify="center"
+					align="center"
+				>
+					Waiting...
+				</Flex>
+			);
+		}
+
+		return <ResizedStream streamUrl={streamUrl} />;
+	};
+
 	return (
 		<div className={styles.widget} style={{ flex: widget.space ?? 1 }}>
-			<Flex flex={3}>
-				{streamUrl === undefined || isRunning ? (
-					<Spin />
-				) : (
-					<iframe
-						title="datascript"
-						src={streamUrl}
-						style={{
-							display: "flex",
-							flex: 1,
-							height: "100%",
-							width: "100%",
-						}}
-					/>
-				)}
-			</Flex>
-			<Flex flex={1} vertical gap={10} style={{ padding: "10px" }}>
-				<Flex>
-					{isRunning ? <Spin /> : <Button onClick={onStartRun}>Run</Button>}
+			<Flex flex={3}>{renderFrame()}</Flex>
+			<Flex
+				className={styles.logs}
+				flex={1}
+				vertical
+				gap={10}
+				style={{ padding: "10px" }}
+			>
+				<Flex justify="space-between" align="center">
+					<Button disabled={isRunning} onClick={onStartRun} type="primary">
+						Run widget
+					</Button>
+					{isRunning && <Spin />}
 				</Flex>
-				<Flex vertical>
-					{sessionLogs.split("\n").map((line, index) => (
-						<Flex key={index}>{line}</Flex>
-					))}
+				<Flex vertical gap={10}>
+					{sessionLogs
+						.split("\n")
+						.filter((line) => line !== "")
+						.map((line, index) => {
+							const splitByIndicator = line.split("]");
+							const typeOfLog = `${splitByIndicator[0]}]`;
+							const log = splitByIndicator.slice(1).join("]");
+
+							return (
+								<Flex key={index} gap={10}>
+									<Flex className={styles.typeOfLog}>{typeOfLog}</Flex>
+									<Flex>{log}</Flex>
+								</Flex>
+							);
+						})}
 				</Flex>
 			</Flex>
 		</div>
