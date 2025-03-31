@@ -56,21 +56,6 @@ class ConfigService {
 
 		return rawResponse.json();
 	}
-
-	public async checkValidPythonCode(
-		code: string,
-	): Promise<ValidPythonCode | InvalidPythonCode> {
-		const rawResponse = await fetch("http://localhost:3001/app/check-python", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({ code }),
-		});
-		const isValid = await rawResponse.json();
-
-		return isValid;
-	}
 }
 
 export const configService = new ConfigService();

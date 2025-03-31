@@ -4,6 +4,7 @@ import type {
 	SearchAndDiscoverConfig,
 	SearchAndDiscoverConfigWithName,
 	SearchAndDiscoverConfigs,
+	TransformedCode,
 	ValidPythonCode,
 } from "api";
 // biome-ignore lint/style/useImportType: <explanation>
@@ -50,7 +51,13 @@ export class AppService {
 		return { status: "ok" };
 	}
 
-	public checkValidPythonCode(code: string): ValidPythonCode | InvalidPythonCode {
+	public checkValidPythonCode(
+		code: string,
+	): ValidPythonCode | InvalidPythonCode {
 		return this.pythonService.isValidPythonCode(code);
+	}
+
+	public transformPythonCode(code: string): TransformedCode {
+		return { transformedCode: this.pythonService.transformPythonCode(code) };
 	}
 }

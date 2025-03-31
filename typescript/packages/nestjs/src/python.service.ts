@@ -34,12 +34,21 @@ export class PythonService {
 		}
 	}
 
-	private standardTransform(code: string) {
-		return `
-def main():
-    ${code}
+	public transformPythonCode(code: string): string {
+		return this.standardTransform(code);
+	}
 
-print("RESULT", main())
-        `;
+	private standardTransform(code: string) {
+		const withTabs = code.replaceAll(/\n/g, "\n    ");
+
+		return `
+import json
+
+def main():
+    ${withTabs}
+result = main()
+print("[START_RESULT]")
+print(json.dumps(result))
+print("[END_RESULT]")`;
 	}
 }

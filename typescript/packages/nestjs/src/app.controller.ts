@@ -31,4 +31,9 @@ export class AppController {
 	checkPython(@Body() code: { code: string }) {
 		return this.appService.checkValidPythonCode(code.code);
 	}
+
+	@Post("transform-code")
+	transformCode(@Body() code: { code: string }) {
+		return this.appService.transformPythonCode(code.code);
+	}
 }
