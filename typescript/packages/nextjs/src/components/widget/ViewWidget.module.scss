@@ -2,16 +2,13 @@
 
 .widget {
     display: flex;
+    position: relative;
     border: 1px solid vars.$black;
     border-radius: 6px;
     margin: 10px;
     background: vars.$white;
     padding: 2px 1px;
     overflow: hidden;
-
-    > iframe {
-        border-radius: 6px;
-    }
 }
 
 .waiting {
@@ -20,11 +17,66 @@
 
 .logs {
     display: flex;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
     border-left: 1px solid vars.$black;
-    overflow-y: scroll;
-    max-height: 88vh;
+    overflow: hidden;
+    background: vars.$white;
+    padding: 10
+}
+
+.logsToggle {
+    padding: 5px;
+    cursor: pointer;
+
+    &:hover {
+        background: vars.$border-color;
+    }
+}
+
+.noLogs {
+    color: vars.$muted-text;
+}
+
+.logContainer {
+    overflow-y: auto;
+    gap: 15px;
+
+    > :nth-child(even) {
+        background: vars.$border-color;
+    }
+}
+
+.logLine {
+    padding: 5px;
 }
 
 .typeOfLog {
     color: vars.$muted-text;
+}
+
+.singleLogLine {
+    white-space: pre-wrap;
+    font-family: monospace;
+}
+
+/* Skeleton loading effect */
+.loading {
+    animation: skeleton-flash 1.5s ease-in-out infinite;
+    border-radius: 4px;
+}
+
+/* Skeleton animation */
+@keyframes skeleton-flash {
+    0% {
+        background-color: #e0e0e0; // Light gray
+    }
+    50% {
+        background-color: #c0c0c0; // Medium gray
+    }
+    100% {
+        background-color: #e0e0e0; // Light gray
+    }
 }

@@ -1,6 +1,6 @@
 from flask import Response, request, jsonify, stream_with_context
 from core.session_manager import create_session, close_session, get_all_session_ids, get_session, send_command
-from core.generate_jpeg_frame import generate_mjpeg_frames
+from core.generate_mpng_frames import generate_mpng_frames
 
 def register_routes(app):
     @app.route("/create-session", methods=["POST"])
@@ -73,7 +73,7 @@ def register_routes(app):
             return jsonify({"error": f"Session '{session_id}' not found or no socket available."}), 404
 
         return Response(
-            stream_with_context(generate_mjpeg_frames(session_id, port)),
+            stream_with_context(generate_mpng_frames(session_id, port)),
             mimetype='multipart/x-mixed-replace; boundary=frame'
         )
     

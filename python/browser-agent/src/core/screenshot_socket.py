@@ -44,13 +44,13 @@ def process_screenshot_requests(client):
     while not screenshot_requests.empty():
         conn = screenshot_requests.get()
         try:
-            screenshot = client.page.screenshot(type="jpeg")
+            screenshot = client.page.screenshot(type="png")
             dimensions = client.page.evaluate("() => ({ width: window.innerWidth, height: window.innerHeight })")
 
             image = Image.open(io.BytesIO(screenshot))  # Open the screenshot as an image
             resized_image = image.resize((dimensions["width"], dimensions["height"]))  # Resize the image
             output_buffer = io.BytesIO()
-            resized_image.save(output_buffer, format="JPEG")
+            resized_image.save(output_buffer, format="PNG")
             resized_screenshot = output_buffer.getvalue()
 
             # print(f"[DEBUG] Captured screenshot size: {len(screenshot)} bytes", flush=True)

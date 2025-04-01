@@ -15,25 +15,8 @@
     "type": "layout-column",
     "columns": [
       {
-        "type": "layout-column",
-        "rows": [
-          {
-            "description": "",
-            "dataScript": "client.act(\"Search the current Amazon stock price using AMZN.\")\nclient.act(\"Switch the graph to viewing the 6M tab instead of the 1D tab.\")\nresponse = client.act(\"Return a bounding box of the price graph including the current price.\")\nreturn { \"type\": \"crop\", \"box\": some_result.response }\n",
-            "type": "widget"
-          }
-        ],
-        "columns": [
-          {
-            "description": "",
-            "dataScript": "client.act(\"Search the current Amazon stock price using AMZN.\")\nclient.act(\"Switch the graph to viewing the 6M tab instead of the 1D tab.\")\nresult = client.act(\"Return a bounding box of the price graph including the current price.\")\nreturn { \"type\": \"crop\", \"box\": result.response }\n",
-            "type": "widget"
-          }
-        ]
-      },
-      {
         "description": "",
-        "dataScript": "client.act(\"Search for the latest news on Amazon\")\nclient.act(\"Click on the news tab\")\nresult = client.act(\"Return a bounding box of the top 5 news articles\")\nreturn { \"type\": \"crop\", \"box\": result.response }",
+        "dataScript": "client.act(\"Search the current Amazon stock price using AMZN.\")\nclient.act(\"Switch the graph to viewing the 6M tab instead of the 1D tab.\")\nresult = client.act(\"Return a bounding box of the price graph including the current price.\")\nreturn { \"type\": \"crop\", \"box\": result.response }\n",
         "type": "widget"
       }
     ]
