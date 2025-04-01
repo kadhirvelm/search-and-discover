@@ -10,8 +10,8 @@ import styles from "./ViewWidget.module.scss";
 import { ResizedStream } from "./stream/ResizedStream";
 
 export const ViewWidget = ({ widget }: { widget: WidgetBlock }) => {
-	const { sessionLogs, result, isRunning, onStartRun, streamUrl } =
-		useRunPython(widget.dataScript);
+	const { sessionLogs, result, isRunning, onStartRun, onRunCode, streamUrl } =
+		useRunPython(widget.dataScript, widget.startingUrl);
 
 	const [isViewingLogs, setIsViewingLogs] = useState(false);
 
@@ -24,20 +24,20 @@ export const ViewWidget = ({ widget }: { widget: WidgetBlock }) => {
 					justify="center"
 					align="center"
 				>
-					{!isRunning && <Button
+					{!isRunning ? <Button
 						disabled={isRunning}
 						onClick={onStartRun}
 						type={isRunning ? "default" : "primary"}
 					>
 						Run widget
-					</Button>}
+					</Button> : <div />}
 				</Flex>
 			);
 		}
 
 		const maybeBox =
 			result?.type === "crop" ? convertBox(result.box) : undefined;
-		return <ResizedStream boundingBox={maybeBox} streamUrl={streamUrl} />;
+		return <ResizedStream boundingBox={maybeBox} streamUrl={streamUrl} onRunCode={onRunCode} />;
 	};
 
 	const maybeRenderSessionLogs = () => {
@@ -49,6 +49,27 @@ export const ViewWidget = ({ widget }: { widget: WidgetBlock }) => {
 			.split("\n")
 			.filter((line) => line !== "")
 			.map((line, index) => {
+				if (!line.startsWith("[")) {
+					const logByNewLine = line.split("\\n");
+					return (
+						<Flex
+							className={styles.logLine}
+							align="baseline"
+							justify="space-between"
+							key={index}
+							gap={5}
+						>
+							<Flex vertical gap={3}>
+								{logByNewLine.map((logLine, logIndex) => (
+									<Flex className={styles.singleLogLine} key={logIndex}>
+										{logLine}
+									</Flex>
+								))}
+							</Flex>
+						</Flex>
+					)
+				}
+
 				const splitByIndicator = line.split("]");
 				const typeOfLog = `${splitByIndicator[0]}]`;
 				const log = splitByIndicator.slice(1).join("]");

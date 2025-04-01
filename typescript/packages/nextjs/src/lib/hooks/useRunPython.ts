@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { browserAgentService } from "../services/browserAgentService";
 import { codeService } from "../services/codeService";
 import { delay } from "../utils/delay";
@@ -26,12 +26,23 @@ function parseForResult(logs: string): PythonResult {
 	}
 }
 
-export function useRunPython(code: string) {
+export function useRunPython(code: string, startingUrl?: string) {
 	const [sessionId, setSessionId] = useState<string | null>(null);
 	const [sessionLogs, setSessionLogs] = useState<string>("");
 
 	const [isRunning, setIsRunning] = useState(false);
 	const runningRef = useRef(false);
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	useEffect(() => {
+		return () => {
+			if (sessionId == null) {
+				return;
+			}
+
+			browserAgentService.stopClient(sessionId);
+		}
+	}, []);
 
 	const onStartRun = async () => {
 		setIsRunning(true);
@@ -42,8 +53,9 @@ export function useRunPython(code: string) {
 		setSessionId(sessionId);
 
 		pollForLogs(sessionId);
-
-		await browserAgentService.startClient(sessionId, "https://www.google.com");
+		
+		const finalUrl = startingUrl === "" ? "https://www.google.com" : startingUrl;
+		await browserAgentService.startClient(sessionId, finalUrl ?? "https://www.google.com");
 
 		const { transformedCode } = await codeService.transformPythonCode(code);
 		await browserAgentService.runCode(sessionId, transformedCode);
@@ -64,6 +76,15 @@ export function useRunPython(code: string) {
 		pollForLogs(sessionId);
 	};
 
+	const onRunCode = async (code: string) => {
+		if (sessionId == null) {
+			return;
+		}
+
+		await browserAgentService.runCode(sessionId, code);
+		await pollForLogs(sessionId);
+	}
+
 	const canViewStream = sessionLogs.includes("[Entering screenshot mode]");
 
 	return {
@@ -71,6 +92,7 @@ export function useRunPython(code: string) {
 		result: parseForResult(sessionLogs),
 		isRunning,
 		onStartRun,
+		onRunCode,
 		streamUrl: canViewStream
 			? browserAgentService.streamSession(sessionId)
 			: undefined,

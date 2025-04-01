@@ -9,6 +9,7 @@ import { python } from "@codemirror/lang-python";
 import CodeMirror from "@uiw/react-codemirror";
 import { Button, Flex, Input, Spin, Tooltip } from "antd";
 import type { WidgetBlock } from "api";
+import { useState } from "react";
 import { Resizer } from "../general/Resizer";
 import styles from "./EditWidget.module.scss";
 
@@ -18,6 +19,9 @@ export const EditWidget = ({
 }: { widget: WidgetBlock; onUpdate: (newWidget: WidgetBlock) => void }) => {
 	const { localCopy, setLocalCopy, isValid, canDiscard, onReset } =
 		useValidatePython(widget.dataScript);
+
+	const [localDescription, setLocalDescription] = useState(widget.description);
+	const [localStartingUrl, setLocalStartingUrl] = useState(widget.startingUrl);
 
 	const onSave = () => {
 		onUpdate({ ...widget, dataScript: localCopy });
@@ -56,7 +60,19 @@ export const EditWidget = ({
 		<Flex flex={1} vertical gap={10}>
 			<Flex align="center" gap={10}>
 				<Flex>Description</Flex>
-				<Input value={widget.description} />
+				<Input
+					onBlur={(e) => onUpdate({ ...widget, description: localDescription })}
+					onChange={(e) => setLocalDescription(e.currentTarget.value)}
+					value={localDescription}
+				/>
+			</Flex>
+			<Flex align="center" gap={10}>
+				<Flex>Starting url</Flex>
+				<Input
+					onBlur={(e) => onUpdate({ ...widget, startingUrl: localStartingUrl })}
+					onChange={(e) => setLocalStartingUrl(e.currentTarget.value)}
+					value={localStartingUrl}
+				/>
 			</Flex>
 			<Flex flex={1} vertical gap={5}>
 				<Flex justify="space-between" align="center">
@@ -75,7 +91,6 @@ export const EditWidget = ({
 					<Resizer>
 						{({ width, height }) => (
 							<CodeMirror
-								autoFocus
 								editable
 								height={`${height}px`}
 								width={`${width - 5}px`}

@@ -1,0 +1,34 @@
+{
+  "entryBlock": {
+    "rows": [
+      {
+        "description": "",
+        "dataScript": "client.act(\"Search the current Amazon stock price using AMZN.\")\nclient.act(\"Switch the graph to viewing the 6M tab instead of the 1D tab.\")\nresult = client.act(\"Return a bounding box of the price graph.\")\nreturn { \"type\": \"crop\", \"box\": result.response }\n",
+        "type": "widget",
+        "startingUrl": "https://www.google.com"
+      },
+      {
+        "description": "",
+        "dataScript": "client.act(\"Type 'Tell me about AMZN' in the search bar\")\nclient.act(\"Click on the black up arrow in the bottom right of the text box\")",
+        "type": "widget",
+        "startingUrl": "https://chatgpt.com/"
+      }
+    ],
+    "type": "layout-column",
+    "columns": [
+      {
+        "description": "",
+        "dataScript": "client.act(\"Search the current Amazon stock price using AMZN.\")\nclient.act(\"Switch the graph to viewing the 6M tab instead of the 1D tab.\")\nresult = client.act(\"Return a bounding box of the price graph.\")\nreturn { \"type\": \"crop\", \"box\": result.response }\n",
+        "type": "widget",
+        "startingUrl": "https://www.google.com"
+      },
+      {
+        "description": "",
+        "dataScript": "client.act(\"Type 'Tell me about AMZN' in the search bar\")\nclient.act(\"Click on the black up arrow in the bottom right of the text box\")",
+        "type": "widget",
+        "startingUrl": "https://chatgpt.com/"
+      }
+    ]
+  },
+  "version": "1.0.0"
+}

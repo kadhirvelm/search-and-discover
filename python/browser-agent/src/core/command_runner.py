@@ -30,6 +30,7 @@ def write_logs_to_file():
     log_file_path = f"./logs/{exec_globals["session_id"]}.log"  # Replace with your desired log file path
     log_file = open(log_file_path, "a")
     sys.stdout = log_file
+    sys.stderr = log_file
 
     atexit.register(log_file.close)
 
@@ -116,6 +117,9 @@ def process_requests():
 
         try:
             print(f"[STARTING_COMMAND] {cmd}")
+
+            dimensions = exec_globals["client"].page.evaluate("() => ({ width: window.innerWidth, height: window.innerHeight })")
+            print(f"[DEBUG] Current dimensions: {dimensions}", flush=True)
 
             exec_command_global = exec_globals.copy()
             exec_command_global["print"] = partial(builtins.print, "[USER_COMMAND]", flush=True)
