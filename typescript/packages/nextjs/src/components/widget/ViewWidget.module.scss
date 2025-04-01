@@ -24,7 +24,7 @@
     border-left: 1px solid vars.$black;
     overflow: hidden;
     background: vars.$white;
-    padding: 10
+    padding: 10px;
 }
 
 .logsToggle {
@@ -41,7 +41,7 @@
 }
 
 .logContainer {
-    overflow-y: auto;
+    overflow: auto;
     gap: 15px;
 
     > :nth-child(even) {
@@ -51,6 +51,7 @@
 
 .logLine {
     padding: 5px;
+    word-break: break-all;
 }
 
 .typeOfLog {

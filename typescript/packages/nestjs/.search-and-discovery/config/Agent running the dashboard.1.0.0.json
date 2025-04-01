@@ -1,0 +1,28 @@
+{
+  "entryBlock": {
+    "rows": [
+      {
+        "description": "",
+        "dataScript": "client.act(\"Search up the AMZN stock\")\nresponse = client.act(\"Return a bounding box for the price graph\")\nprint(response)\nreturn { \"type\": \"crop\", \"box\": response.response }",
+        "type": "widget",
+        "startingUrl": "https://www.google.com"
+      }
+    ],
+    "type": "layout-column",
+    "columns": [
+      {
+        "description": "",
+        "dataScript": "response = client.act(\"Search up the AMZN stock. Return a bounding box for the graph\")\nprint(response)\nreturn { \"type\": \"crop\", \"box\": response.response }",
+        "type": "widget",
+        "startingUrl": "https://www.google.com"
+      },
+      {
+        "description": "",
+        "dataScript": "client.act(\"Search up the AMZN stock\")",
+        "type": "widget",
+        "startingUrl": "https://www.google.com"
+      }
+    ]
+  },
+  "version": "1.0.0"
+}

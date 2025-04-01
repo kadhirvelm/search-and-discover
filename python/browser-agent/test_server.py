@@ -58,6 +58,7 @@ if __name__ == "__main__":
     run_code(session_id, "client.act('search for coffee')")
 
     get_logs(session_id)
+
     # Alternatively, if you want to perform an action (like "search for potatoes"),
     # include the act_prompt parameter:
     # start_client(session_id, starting_page="https://www.google.com", act_prompt="search for potatoes")

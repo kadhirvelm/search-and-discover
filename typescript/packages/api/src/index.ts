@@ -30,6 +30,7 @@ export interface WidgetBlock {
 	description: string;
 	dataScript: string;
 	space?: number;
+	startingUrl?: string;
 	type: "widget";
 }
 
