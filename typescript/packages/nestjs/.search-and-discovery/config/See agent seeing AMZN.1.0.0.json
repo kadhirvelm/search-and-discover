@@ -18,15 +18,9 @@
     "columns": [
       {
         "description": "",
-        "dataScript": "client.act(\"Search the current Amazon stock price using AMZN.\")\nclient.act(\"Switch the graph to viewing the 6M tab instead of the 1D tab.\")\nresult = client.act(\"Return a bounding box of the price graph.\")\nreturn { \"type\": \"crop\", \"box\": result.response }\n",
+        "dataScript": "client.act(\"Go to the See AMZN dashboard.\")\nclient.act(\"Click on the 'View' button in the top right\")\nclient.act(\"Click on all three run widget buttons\")\n",
         "type": "widget",
-        "startingUrl": "https://www.google.com"
-      },
-      {
-        "description": "",
-        "dataScript": "client.act(\"Type 'Tell me about AMZN' in the search bar\")\nclient.act(\"Click on the black up arrow in the bottom right of the text box\")",
-        "type": "widget",
-        "startingUrl": "https://chatgpt.com/"
+        "startingUrl": "http://localhost:3000"
       }
     ]
   },

@@ -1,0 +1,40 @@
+{
+  "entryBlock": {
+    "rows": [
+      {
+        "description": "",
+        "dataScript": "client.act(\"Search up the AMZN stock\")\nresponse = client.act(\"Return a bounding box for the price graph\")\nprint(response)\nreturn { \"type\": \"crop\", \"box\": response.response }",
+        "type": "widget",
+        "startingUrl": "https://www.google.com"
+      }
+    ],
+    "type": "layout-column",
+    "columns": [
+      {
+        "description": "",
+        "dataScript": "client.act(\"Search amzn stock news\")\nresponse = client.act(\"Click on the 'news' tab. Return a bounding box around all articles\")\nprint(response)\nreturn { \"type\": \"crop\", \"box\": response.response }",
+        "type": "widget",
+        "startingUrl": "https://www.google.com"
+      },
+      {
+        "type": "layout-row",
+        "rows": [
+          {
+            "description": "",
+            "dataScript": "response = client.act(\"Search up AMZN. Return a bounding box for the price graph\")\nprint(response)\nreturn { \"type\": \"crop\", \"box\": response.response }",
+            "type": "widget",
+            "startingUrl": "https://www.google.com"
+          },
+          {
+            "description": "",
+            "dataScript": "response = client.act(\"Search up AMZN financials. Return a bounding box for the earnings calls\")\nprint(response)\nreturn { \"type\": \"crop\", \"box\": response.response }",
+            "type": "widget",
+            "startingUrl": "https://www.google.com"
+          }
+        ],
+        "space": 2
+      }
+    ]
+  },
+  "version": "1.0.0"
+}
