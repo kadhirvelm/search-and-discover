@@ -110,7 +110,7 @@ export const ViewWidget = ({ widget }: { widget: WidgetBlock }) => {
 			<Resizer>
 				{({ height }) => (
 					<Flex flex={1}>
-						<Flex className={styles.logsToggle} onClick={() => setIsViewingLogs(false)}>
+						<Flex className={styles.logsToggle} onClick={() => setIsViewingLogs(false)} style={{ padding: "5px" }}>
 							<RightOutlined />
 						</Flex>
 						<Flex
@@ -131,9 +131,9 @@ export const ViewWidget = ({ widget }: { widget: WidgetBlock }) => {
 		<div className={styles.widget} style={{ flex: widget.space ?? 1 }}>
 			<Flex flex={1}>{renderFrame()}</Flex>
 			<Flex
-				className={styles.logs}
+				className={clsx(styles.logs, { [styles.noShowLogs]: !isViewingLogs, [styles.showLogs]: isViewingLogs })}
 				flex={1}
-				style={isViewingLogs ? { width: "90%" } : { width: "25px" }}
+				style={isViewingLogs ? { width: "90%" } : { width: "auto", opacity: 0.5 }}
 			>
 				{maybeRenderLogs()}
 			</Flex>

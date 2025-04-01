@@ -61,7 +61,7 @@ def process_screenshot_requests(client):
             conn.close()
 
 
-def get_screenshot_from_socket(host, port, retries=5, delay=0.1):
+def get_screenshot_from_socket(host, port, retries=5, delay=0.05):
     for i in range(retries):
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

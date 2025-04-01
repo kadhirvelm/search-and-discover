@@ -91,7 +91,7 @@ def start_screenshot():
 
     # while not should_exit:
     #     process_screenshot_requests(exec_globals["client"])
-    #     time.sleep(0.1)
+    #     time.sleep(0.05)
 
 def process_requests():
     while not should_exit:
@@ -100,19 +100,19 @@ def process_requests():
         # Use select to check if there is incoming command on stdin.
         ready, _, _ = select.select([sys.stdin], [], [], 0.05)
         if not ready:
-            time.sleep(0.1)
+            time.sleep(0.05)
             continue
 
         # Read the entire command line until the next newline
         line = sys.stdin.readline()
         if not line:
-            time.sleep(0.1)
+            time.sleep(0.05)
             continue
 
         cmd = line.strip()
         deserialized_cmd = cmd.replace("\\n", "\n").replace("\\r", "\r")
         if not deserialized_cmd:
-            time.sleep(0.1)
+            time.sleep(0.05)
             continue
 
         try:

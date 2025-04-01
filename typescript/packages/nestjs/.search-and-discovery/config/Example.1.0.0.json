@@ -1,0 +1,14 @@
+{
+  "entryBlock": {
+    "rows": [
+      {
+        "type": "widget",
+        "dataScript": "return 1+1",
+        "description": "",
+        "startingUrl": "https://www.amazon.com"
+      }
+    ],
+    "type": "layout-row"
+  },
+  "version": "1.0.0"
+}
